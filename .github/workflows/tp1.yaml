@@ -1,0 +1,29 @@
+name: "Tp1 - markov"
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+jobs:   
+  test_and_lint: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Clone Repo content 
+        uses: actions/checkout@v4
+        with:
+          ref : master
+          
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: npm ci 
+
+      - name: Unit Test
+        run: npm test
+
+      - name: Lint code
+        run: npm run lint 

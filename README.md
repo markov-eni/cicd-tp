@@ -14,6 +14,23 @@ suites (unit, integration, and end-to-end).
 - **Linting**: Configured with ESLint (via `.eslintrc.js` and `.eslintignore`).
 - **Node.js Version Management**: Uses `.nvmrc` to specify Node.js v22.19.0.
 
+## Application Behavior (Based on E2E Tests)
+
+### GET /hello Endpoint
+- **Basic greeting**: Returns "Hello world!" with status 200
+- **Personalized greeting**: Returns "Hello world! From {name}" when a name is provided in the URL path
+- **Security validation**:
+  - Returns 404 if the name contains backslashes (e.g., "Alice/Bob")
+  - Returns 400 if the name contains forbidden characters (e.g., "<script>")
+  - Returns 400 if the name exceeds 100 characters
+
+### POST /hello Endpoint
+- **Basic greeting**: Returns "Hello world!" with status 200
+- **Personalized greeting**: Returns "Hello world! From {x-name}" when the "x-name" header is provided
+- **Security validation**:
+  - Returns 400 if the "x-name" header contains forbidden characters
+  - Returns 400 if the "x-name" header exceeds 100 characters
+
 ## Prerequisites
 
 - Node.js ≥22.19.0 (use `.nvmrc` with nvm: `nvm use`).

@@ -1,0 +1,38 @@
+name: npm_install
+
+on:
+  workflow_call:
+    outputs:
+      cache_key:
+        description: "Node modules cache key"
+        value: ${{ jobs.install.outputs.cache_key }}
+      cache_path:
+        description: "Node modules cache path"
+        value: ${{ jobs.install.outputs.cache_path }}
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    outputs:
+      cache_key: ${{ steps.cache_key.outputs.cache_key }}
+      cache_path: ${{ steps.cache_path.outputs.cache_path }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - run: npm ci
+
+      - id: cache_key
+        run: echo "cache_key=${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
+
+      - id: cache_path
+        run: echo "cache_path=node_modules" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ steps.cache_key.outputs.cache_key }}

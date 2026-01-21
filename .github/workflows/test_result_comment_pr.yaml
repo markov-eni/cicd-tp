@@ -1,0 +1,21 @@
+name: test_result_comment_pr
+
+on:
+  workflow_call:
+    inputs:
+      test_result:
+        type: string
+        required: true 
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Comment PR
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            Test results artifact: ${{ inputs.test_result }}

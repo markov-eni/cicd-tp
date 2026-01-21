@@ -1,0 +1,27 @@
+name: npm_lint
+
+on:
+  workflow_call:
+    inputs:
+      cache_key:
+        required: true
+        type: string
+      cache_path:
+        required: true
+        type: string
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: actions/cache@v5
+        with:
+          path: ${{ inputs.cache_path }}
+          key: ${{ inputs.cache_key }}
+
+      - run: npm run lint

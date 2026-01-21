@@ -1,0 +1,44 @@
+name: Tp1 - markov
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  install:
+    uses: ./.github/workflows/npm_install.yaml
+
+  lint:
+    needs: install
+    uses: ./.github/workflows/npm_lint.yaml
+    with:
+      cache_key: ${{ needs.install.outputs.cache_key }}
+      cache_path: ${{ needs.install.outputs.cache_path }}
+
+  test:
+    needs: install
+    uses: ./.github/workflows/npm_test.yaml
+    with:
+      cache_key: ${{ needs.install.outputs.cache_key }}
+      cache_path: ${{ needs.install.outputs.cache_path }}
+
+  comment_pr:
+    needs: test
+    if: always()
+    permissions:
+      pull-requests: write
+    uses: ./.github/workflows/test_result_comment_pr.yaml
+    with:
+      test_result: ${{ needs.test.result }}
+
+  publish_pages:
+    needs: test
+    if: always()
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      pull-requests: write
+    uses: ./.github/workflows/test_result_publish_github_page.yaml
+    with:
+      artifact_name: ${{ needs.test.outputs.artifact_name }}

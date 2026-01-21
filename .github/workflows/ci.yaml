@@ -5,9 +5,13 @@ on:
     branches: [main, master]
 
 jobs:
+
+  # 1. Install & Cache Dependencies 
   install:
     uses: ./.github/workflows/npm_install.yaml
 
+
+  # 2. Lint 
   lint:
     needs: install
     uses: ./.github/workflows/npm_lint.yaml
@@ -15,6 +19,7 @@ jobs:
       cache_key: ${{ needs.install.outputs.cache_key }}
       cache_path: ${{ needs.install.outputs.cache_path }}
 
+  # 2. Run tests ( unit , integration , e2e )
   test:
     needs: install
     uses: ./.github/workflows/npm_test.yaml
@@ -22,16 +27,18 @@ jobs:
       cache_key: ${{ needs.install.outputs.cache_key }}
       cache_path: ${{ needs.install.outputs.cache_path }}
 
-  comment_pr:
+  # 3. Comment the Pr about test execution 
+  comment_test_execution:
     needs: test
     if: always()
     permissions:
       pull-requests: write
-    uses: ./.github/workflows/test_result_comment_pr.yaml
+    uses: ./.github/workflows/test_report_comment_pr.yaml
     with:
       test_result: ${{ needs.test.result }}
 
-  publish_pages:
+  # 3. Publish test report to github pages 
+  publish_test_report:
     needs: test
     if: always()
     permissions:
@@ -39,6 +46,6 @@ jobs:
       pages: write
       id-token: write
       pull-requests: write
-    uses: ./.github/workflows/test_result_publish_github_page.yaml
+    uses: ./.github/workflows/test_report_publish_github_page.yaml
     with:
       artifact_name: ${{ needs.test.outputs.artifact_name }}

@@ -11,34 +11,41 @@ on:
           type: string
     outputs:
       artifact_name:
-        value: allure-results # matches the name of the artifact below 
+        value: allure-report # matches the name of the artifact below 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
+      # Clone repository 
       - uses: actions/checkout@v6
 
+      # Setup Node using specific version 
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
 
+      # Load cache dependencies 
       - uses: actions/cache@v5
         with:
           path: ${{ inputs.cache_path }}
           key: ${{ inputs.cache_key }}
   
-
-      - name: Unit Test
+      # Run tests 
+      - name: Run Test ( unit, integration , e2e )
         run: npm test
 
+
+      # Generate the test report 
       - name: Generate test report
         if: always()
-        run: npx allure generate allure-results -o allure-results --clean
+        run: |
+          npx allure generate allure-results --clean
 
+      # Save the report as artifact 
       - name: Upload test report
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: allure-results
-          path: allure-results
+          name: allure-report
+          path: allure-report

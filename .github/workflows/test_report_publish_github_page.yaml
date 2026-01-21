@@ -15,18 +15,23 @@ jobs:
       id-token: write
 
     steps:
+      # Download the test report 
       - uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.artifact_name }}
-          path: allure-results
+          path: allure-report
 
+      # Setup pages 
       - uses: actions/configure-pages@v5
 
+      # Upload the test report to github pages 
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: allure-results/
-
+          path: allure-report/
+      
+      # Deploy it to serve it as static file 
       - id: deployment
         uses: actions/deploy-pages@v4
-
+        
+      # Echo the url in order to retrieve the artifact
       - run: echo ${{ steps.deployment.outputs.page_url }}

@@ -13,15 +13,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      # Clone the repo 
       - uses: actions/checkout@v6
 
+      # Setup Node using specific version 
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
-
+      
+      # Load cache dependencies 
       - uses: actions/cache@v5
         with:
           path: ${{ inputs.cache_path }}
           key: ${{ inputs.cache_key }}
 
+      # Run dependencies 
       - run: npm run lint

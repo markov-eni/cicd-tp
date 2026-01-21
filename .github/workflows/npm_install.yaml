@@ -1,4 +1,5 @@
 name: npm_install
+description: install & cache dependencies 
 
 on:
   workflow_call:
@@ -18,14 +19,18 @@ jobs:
       cache_path: ${{ steps.cache_path.outputs.cache_path }}
 
     steps:
+      # Clone repo 
       - uses: actions/checkout@v4
 
+      # Setup Node using specific version
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
 
+      # Install deps deterministically 
       - run: npm ci
 
+      # Cache the deps & Set the cache as output 
       - id: cache_key
         run: echo "cache_key=${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
 

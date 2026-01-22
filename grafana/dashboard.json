@@ -1,0 +1,163 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bfax4uv43v280a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 20
+        },
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bfax4uv43v280a"
+          },
+          "editorMode": "builder",
+          "expr": "allure_tests_total",
+          "legendFormat": "Nombre de tests executés",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bfax4uv43v280a"
+          },
+          "editorMode": "builder",
+          "expr": "allure_tests_passed",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Nombre de tests en succès",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bfax4uv43v280a"
+          },
+          "editorMode": "builder",
+          "expr": "allure_tests_failed",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Nombre de tests en échec",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bfax4uv43v280a"
+          },
+          "editorMode": "builder",
+          "expr": "allure_tests_skipped",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Nombre de tests skipped",
+          "range": true,
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bfax4uv43v280a"
+          },
+          "editorMode": "builder",
+          "expr": "allure_tests_avg_duration_milliseconds",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Execution moyenne des tests (ms)",
+          "range": true,
+          "refId": "E"
+        }
+      ],
+      "title": "Allure Test Report",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Report Test ",
+  "uid": "ad8nxx9",
+  "version": 3
+}

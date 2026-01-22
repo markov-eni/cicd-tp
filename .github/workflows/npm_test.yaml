@@ -4,10 +4,8 @@ on:
   workflow_call:
     inputs:
         cache_key:
-          required: true
           type: string
         cache_path:
-          required: true
           type: string
     outputs:
       artifact_name:
@@ -25,11 +23,18 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      # Load cache dependencies 
+      # Load dependencies 
+
+      # If cache deps is specified : use it 
       - uses: actions/cache@v5
+        if: ${{ inputs.cache_key != ''  && inputs.cache_path != '' }} 
         with:
           path: ${{ inputs.cache_path }}
           key: ${{ inputs.cache_key }}
+      
+      # Else : install deps 
+      - if: ${{ inputs.cache_key == ''  && inputs.cache_path == '' }} 
+        run: npm ci 
   
       # Run tests 
       - name: Run Test ( unit, integration , e2e )
